@@ -7,8 +7,8 @@ public class PartTimeStaff extends Staff{
     private double timeWork;
     public PartTimeStaff() {
     }
-    public PartTimeStaff(String id, String name, LocalDate birthDate, int tel, Address address) {
-        super(id, name, birthDate, tel, address);
+    public PartTimeStaff(String id, String name, LocalDate birthDay, int tel, Address address) {
+        super(id, name, birthDay, tel, address);
     }
 
     public double getTimeWork() {
@@ -26,9 +26,10 @@ public class PartTimeStaff extends Staff{
 
     @Override
     public String toString() {
-        return super.toString()+ '\n' +
-                "Nhân viên bán thời gian" + '\n' +
-                "Thời gian làm việc: " + timeWork + '\n' +
-                "Lương: " + payroll();
+        return super.toString()+
+                "Nhân viên bán thời gian:" + '\n' +
+                "Thời gian làm việc: " + timeWork + '\t' +
+                "Lương: " + payroll() + '\n' +
+                "----------";
     }
 }

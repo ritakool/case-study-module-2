@@ -8,8 +8,8 @@ public class FullTimeStaff extends Staff{
     private double fine;
     public FullTimeStaff() {
     }
-    public FullTimeStaff(String id, String name, LocalDate birthDate, int tel, Address address) {
-        super(id, name, birthDate, tel, address);
+    public FullTimeStaff(String id, String name, LocalDate birthDay, int tel, Address address) {
+        super(id, name, birthDay, tel, address);
     }
 
     public double getBonus() {
@@ -37,9 +37,10 @@ public class FullTimeStaff extends Staff{
     public String toString() {
         return  super.toString() +
                 "Nhân viên chính thức: " + '\n' +
-                "Lương cơ bản = " + BASIC_SALARY + '\n' +
-                "Thưởng: " + bonus +'\n' +
-                "Phạt: " + fine + '\n' +
-                "Tổng lương: " + payroll();
+                "Lương cơ bản = " + BASIC_SALARY + '\t' +
+                "Thưởng: " + bonus +'\t' +
+                "Phạt: " + fine + '\t' +
+                "Tổng lương: " + payroll() + "\n" +
+                "---------------";
     }
 }

@@ -6,6 +6,13 @@ public class Address {
     private String commune;
     private String apartmentNumber;
 
+    public Address(String conscious, String district, String commune, String apartmentNumber) {
+        this.conscious = conscious;
+        this.district = district;
+        this.commune = commune;
+        this.apartmentNumber = apartmentNumber;
+    }
+
     public void setConscious(String conscious) {
         this.conscious = conscious;
     }
@@ -40,11 +47,9 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Địa chỉ {" +
-                "Tỉnh='" + conscious + '\'' +
-                ", Huyện='" + district + '\'' +
-                ", Xã='" + commune + '\'' +
-                ", Số Nhà='" + apartmentNumber + '\'' +
-                '}';
+        return " Tỉnh: " + conscious  +
+                ", Huyện: " + district  +
+                ", Xã: " + commune  +
+                ", Số Nhà: " + apartmentNumber ;
     }
 }

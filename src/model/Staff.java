@@ -59,21 +59,21 @@ public abstract class Staff {
     public void setAddress(Address address) {
         this.address = address;
     }
-    public int calculateAge(LocalDate birthDate){
+    public int calculateAge(LocalDate birthDay){
         LocalDate today = LocalDate.now();
-        Period period = Period.between(birthDate, today);
+        Period period = Period.between(birthDay, today);
         return period.getYears();
     }
     public abstract double payroll();
 
     @Override
     public String toString() {
-        return "Nhân viên: " + +'\n' +
-                "id=" + id + '\n' +
-                "Họ và tên: " + name + '\n' +
-                "Ngày sinh: " + birthDay + '\n' +
-                "Tuổi: " + calculateAge(birthDay)+
-                "Liên hệ: " + tel + '\n' +
+        return "Nhân viên: " + '\n' +
+                "id= " + id + '\t' +
+                "Họ và tên: " + name + '\t' +
+                "Ngày sinh: " + birthDay + '\t' +
+                "Tuổi: " + calculateAge(birthDay)+ '\t' +
+                "Liên hệ: " + tel + '\t' +
                 "Địa chỉ: " + address + '\n';
     }
 }
