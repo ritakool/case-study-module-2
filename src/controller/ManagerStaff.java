@@ -2,6 +2,7 @@ package controller;
 
 import model.Address;
 import model.Staff;
+import view.DataEntryKeyboard;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class ManagerStaff {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(ManagerStaff.class));
    List<Staff> staffs = new ArrayList<>();
    Scanner scanner = new Scanner(System.in);
+   DataEntryKeyboard input = new DataEntryKeyboard();
 
     public ManagerStaff() {
     }
@@ -57,19 +59,28 @@ public class ManagerStaff {
                     choice = scanner.nextLine();
                     switch (choice) {
                         case "1":
+                            System.out.println("Sửa tên: ");
                             String name = scanner.nextLine();
+                            while (!input.checkName(name)) {
+                            LOGGER.info("Nhập đúng định dạng tên...");
+                            name = scanner.nextLine();
+                            }
                             staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setName(name));
                             LOGGER.info("Đã cập nhập tên thành công.");
                             break;
                         case "2":
+                            System.out.println("Sửa ngày tháng năm sinh: ");
                             LOGGER.warning("Nhập đúng định dạng (yyyy-mm-dd)");
                             LocalDate birthDay = LocalDate.parse(scanner.nextLine());
                             staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setBirthDay(birthDay));
                             LOGGER.info("Cập nhật thành công ngày sinh.");
                             break;
                         case "3":
-                            String
-                            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setAddress(new Address()));
+                            String conscious;
+                            String district;
+                            String commune;
+                            String apartmentNumber;
+//                            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setAddress(new Address()));
                             break;
                         case "0":
                             LOGGER.info("Không thay đổi nữa...");
@@ -94,7 +105,7 @@ public class ManagerStaff {
             String confirm = scanner.nextLine();
             if (confirm.equalsIgnoreCase("y")) {
                 LOGGER.info("Đã cập nhập thành công");
-                //TODO: chưa hoàn thành
+                //TODO: chưa hoàn thành.
             } else {
                 LOGGER.info("không cập nhập.");
             }
@@ -104,4 +115,5 @@ public class ManagerStaff {
         boolean checkId = staffs.stream().anyMatch(staff -> staff.getId().equals(id));
         return checkId;
     }
+//    public void
 }
