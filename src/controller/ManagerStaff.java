@@ -33,7 +33,7 @@ public class ManagerStaff {
             i++;
         }
         if (!checkName) {
-            LOGGER.warning("không tồn tại nhân viên này trong hệ thống.");
+            System.out.println("Không tồn tại nhân viên này trong hệ thống.");
         }
 
     }
@@ -41,11 +41,11 @@ public class ManagerStaff {
         if (!checkStaffId(id)) {
             LOGGER.info("Không tồn tại nhân viên này trong hệ thống.");
         } else {
-            LOGGER.info("Bạn có chắc muốn sửa đổi thông tin (Y/N)?");
+            LOGGER.warning("Bạn có chắc muốn sửa đổi thông tin (Y/N)?");
             String confirm = scanner.nextLine();
             if (confirm.equalsIgnoreCase("y")) {
-                String choice =scanner.nextLine();
-                while (!choice.equals("0")) {
+                String choice;
+                do {
                     System.out.println("""
                                         Bạn muốn sửa thông tin nào: 
                                         1. Tên
@@ -86,12 +86,12 @@ public class ManagerStaff {
                             staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(System.out::println);
                             break;
                     }
-                }
+                } while (!choice.equals("0"));
             } else {
                 System.out.println("không thay đổi gì cả.");
             }
         }
-    }
+    } //TODO: chưa hoàn thành thay đổi loại nhân viên
 
     public void addStaff(Staff staff) {
 
@@ -189,5 +189,19 @@ public class ManagerStaff {
         });
         displayStaff();
     }
-
+    public void removeStaff(String id) {
+        if (!checkStaffId(id)) {
+            System.out.println("Không tồn tại nhân viên này trong hệ thống");
+        } else {
+            LOGGER.warning("Bạn có chắc muốn xóa nhân viên này (Y/N)? ");
+            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(System.out::println);
+            String confirm = scanner.nextLine();
+            if (confirm.equalsIgnoreCase("y")) {
+                staffs.removeIf(staff -> staff.getId().equals(id));
+                System.out.println("đã xóa thành công...");
+            } else {
+                System.out.println("không xóa nữa");
+            }
+        }
+    }
 }
