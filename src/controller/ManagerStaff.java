@@ -6,9 +6,7 @@ import view.Regex;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 import java.util.logging.Logger;
 
 public class ManagerStaff {
@@ -20,7 +18,7 @@ public class ManagerStaff {
     public ManagerStaff() {
     }
     public void displayStaff() {
-        LOGGER.info("Danh sách nhân viên là: ");
+        System.out.println("Danh sách nhân viên là: ");
         staffs.forEach(System.out::println);
     }
 
@@ -35,7 +33,7 @@ public class ManagerStaff {
             i++;
         }
         if (!checkName) {
-            LOGGER.warning("không tồn tại tên này.");
+            LOGGER.warning("không tồn tại nhân viên này trong hệ thống.");
         }
 
     }
@@ -46,8 +44,8 @@ public class ManagerStaff {
             LOGGER.info("Bạn có chắc muốn sửa đổi thông tin (Y/N)?");
             String confirm = scanner.nextLine();
             if (confirm.equalsIgnoreCase("y")) {
-                String choice;
-                do {
+                String choice =scanner.nextLine();
+                while (!choice.equals("0")) {
                     System.out.println("""
                                         Bạn muốn sửa thông tin nào: 
                                         1. Tên
@@ -78,15 +76,19 @@ public class ManagerStaff {
                             System.out.println("sửa địa chỉ: ");
                             staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setAddress(inputAddress()));
                             LOGGER.info("Cập nhật thành công địa chỉ mới");
+                            break;
+                        case "5":
+                            System.out.println("Chuyển đổi nhân viên: ");
+
                         case "0":
-                            LOGGER.info("Không thay đổi nữa...");
+                            System.out.println("Không thay đổi nữa");
+                            System.out.println("Nhân viên bạn vừa sửa đổi là: ");
+                            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(System.out::println);
                             break;
                     }
-
-
-                }while (!choice.equals("0"));
+                }
             } else {
-                LOGGER.info("Không thay đổi gì cả.");
+                System.out.println("không thay đổi gì cả.");
             }
         }
     }
@@ -101,14 +103,14 @@ public class ManagerStaff {
             String confirm = scanner.nextLine();
             if (confirm.equalsIgnoreCase("y")) {
                 updateStaff(staff.getId());
-                LOGGER.info("Đã cập nhập thành công");
             } else {
-                LOGGER.info("không cập nhập.");
+                System.out.println("Không cập nhật nữa.");
             }
         }
     }
     public boolean checkStaffId(String id) {
-        boolean checkId = staffs.stream().anyMatch(staff -> staff.getId().equals(id));
+        boolean checkId;
+        checkId = staffs.stream().anyMatch(staff -> staff.getId().equals(id));
         return checkId;
     }
     public String inputName() {
@@ -166,7 +168,26 @@ public class ManagerStaff {
         }
         System.out.println("Nhập Số nhà: ");
         String apartmentNumber = scanner.nextLine();
-        Address address = new Address();
-        return address = new Address(conscious,district,commune,apartmentNumber);
+        return new Address(conscious,district,commune,apartmentNumber);
     }
+    public void arrangement() {
+        Collections.sort(staffs, new Comparator<Staff>() {
+            @Override
+            public int compare(Staff o1, Staff o2) {
+                String nameObj1 = o1.getName().substring(o1.getName().lastIndexOf(" ") + 1);
+                String nameObj2 = o2.getName().substring(o2.getName().lastIndexOf(" ") + 1);
+                int nameObj = nameObj1.compareTo(nameObj2);
+                if(nameObj != 0){
+                    return nameObj;
+                }
+                else {
+                        String objName1 =o1.getName().substring(0,o1.getName().indexOf(" "));
+                        String objName2 =o2.getName().substring(0,o2.getName().indexOf(" "));
+                        return objName1.compareTo(objName2);
+                    }
+                }
+        });
+        displayStaff();
+    }
+
 }
