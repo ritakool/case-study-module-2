@@ -5,13 +5,13 @@ import model.PartTimeStaff;
 import model.Staff;
 
 import java.time.LocalDate;
-import java.util.Scanner;
-import view.DataEntryKeyboard;
+
+import view.Regex;
 
 public class Main {
     public static void main(String[] args) {
         ManagerStaff managerStaff = new ManagerStaff();
-        DataEntryKeyboard dataEntryKeyboard = new DataEntryKeyboard();
+        Regex regex = new Regex();
 
         Staff staff1 = new FullTimeStaff("#1","Nguyễn Văn Tèo", LocalDate.parse("1994-07-09"),7777777,new Address("Hà Nội","Ba Đình","34","425"));
         Staff staff2 = new PartTimeStaff("#2","Đặng Hà", LocalDate.parse("2005-07-09"),7777777,new Address("Hà Nội","Ba Đình","34","425"));
@@ -20,7 +20,7 @@ public class Main {
         managerStaff.addStaff(staff3);
         managerStaff.addStaff(staff2);
         managerStaff.displayStaff();
-        managerStaff.displayNameStaff("Nga");
+        managerStaff.displayNameStaff("h");
         managerStaff.updateStaff("#3");
 //        Scanner scanner = new Scanner(System.in);
 //        String name = scanner.nextLine();

@@ -2,8 +2,9 @@ package controller;
 
 import model.Address;
 import model.Staff;
-import view.DataEntryKeyboard;
+import view.Regex;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +15,7 @@ public class ManagerStaff {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(ManagerStaff.class));
    List<Staff> staffs = new ArrayList<>();
    Scanner scanner = new Scanner(System.in);
-   DataEntryKeyboard input = new DataEntryKeyboard();
+   Regex input = new Regex();
 
     public ManagerStaff() {
     }
@@ -27,16 +28,16 @@ public class ManagerStaff {
         boolean checkName = false;
         int i = 0;
         while (i < staffs.size()) {
-            String[] arrName = staffs.get(i).getName().split("\\s");
-            if (arrName[arrName.length - 1].equalsIgnoreCase(name)) {
-                checkName = true;
+            if (staffs.get(i).getName().toLowerCase().contains(name.toLowerCase())) {
                 System.out.println(staffs.get(i));
+                checkName = true;
             }
             i++;
         }
         if (!checkName) {
             LOGGER.warning("không tồn tại tên này.");
         }
+
     }
     public void updateStaff(String id) {
         if (!checkStaffId(id)) {
@@ -47,39 +48,28 @@ public class ManagerStaff {
             if (confirm.equalsIgnoreCase("y")) {
                 String choice;
                 do {
-
                     System.out.println("""
                                         Bạn muốn sửa thông tin nào: 
                                         1. Tên
                                         2. Ngày tháng năm sinh
-                                        4. Số điện thoại
-                                        3. Địa chỉ
+                                        3. Số điện thoại
+                                        4. Địa chỉ
+                                        5. Chuyển đổi nhân viên
                                         0. Không thay đổi nữa                            
                                                                     """);
                     choice = scanner.nextLine();
                     switch (choice) {
                         case "1":
                             System.out.println("Sửa tên: ");
-                            String name = scanner.nextLine();
-                            while (!input.checkName(name)) {
-                            LOGGER.info("Nhập đúng định dạng tên...");
-                            name = scanner.nextLine();
-                            }
-                            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setName(name));
+                            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setName(inputName()));
                             LOGGER.info("Đã cập nhập tên thành công.");
                             break;
                         case "2":
                             System.out.println("Sửa ngày tháng năm sinh: ");
-                            LOGGER.warning("Nhập đúng định dạng (yyyy-mm-dd)");
-                            LocalDate birthDay = LocalDate.parse(scanner.nextLine());
-                            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setBirthDay(birthDay));
+                            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setBirthDay(inputBirthDay()));
                             LOGGER.info("Cập nhật thành công ngày sinh.");
                             break;
                         case "3":
-                            String conscious;
-                            String district;
-                            String commune;
-                            String apartmentNumber;
 //                            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setAddress(new Address()));
                             break;
                         case "0":
@@ -115,5 +105,32 @@ public class ManagerStaff {
         boolean checkId = staffs.stream().anyMatch(staff -> staff.getId().equals(id));
         return checkId;
     }
-//    public void
+    public String inputName() {
+        String name;
+        do {
+            LOGGER.info("Nhập đúng định dạng tên...");
+            name = scanner.nextLine();
+        } while (!input.checkName(name));
+        return name;
+    }
+    public LocalDate inputBirthDay() {
+        boolean checkBirthDay = false;
+        LocalDate birthDay =null;
+        while (!checkBirthDay) {
+            try {
+                LOGGER.warning("Nhập đúng định dạng (yyyy-mm-dd)");
+                birthDay = LocalDate.parse(scanner.nextLine());
+                checkBirthDay = true;
+            } catch (DateTimeException e) {
+                LOGGER.info("Không đúng định dạng yyyy-mm-dd");
+            }
+        } return birthDay;
+    }
+    public Address inputAddress() {
+        String conscious;
+        String district;
+        String commune;
+        String apartmentNumber;
+
+    }
 }
