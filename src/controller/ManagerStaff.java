@@ -15,7 +15,7 @@ public class ManagerStaff {
     private static final Logger LOGGER = Logger.getLogger(String.valueOf(ManagerStaff.class));
    List<Staff> staffs = new ArrayList<>();
    Scanner scanner = new Scanner(System.in);
-   Regex input = new Regex();
+   Regex regex = new Regex();
 
     public ManagerStaff() {
     }
@@ -70,8 +70,14 @@ public class ManagerStaff {
                             LOGGER.info("Cập nhật thành công ngày sinh.");
                             break;
                         case "3":
-//                            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setAddress(new Address()));
+                            System.out.println("Sửa số điện thoại: ");
+                            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setTel(inputPhoneNumber()));
+                            LOGGER.info("cập nhật thành công số điện thoại");
                             break;
+                        case "4":
+                            System.out.println("sửa địa chỉ: ");
+                            staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setAddress(inputAddress()));
+                            LOGGER.info("Cập nhật thành công địa chỉ mới");
                         case "0":
                             LOGGER.info("Không thay đổi nữa...");
                             break;
@@ -94,8 +100,8 @@ public class ManagerStaff {
             LOGGER.info("Đã có nhân viên này, bạn có muốn cập nhật nhân viên này không. (Y/N) ?");
             String confirm = scanner.nextLine();
             if (confirm.equalsIgnoreCase("y")) {
+                updateStaff(staff.getId());
                 LOGGER.info("Đã cập nhập thành công");
-                //TODO: chưa hoàn thành.
             } else {
                 LOGGER.info("không cập nhập.");
             }
@@ -110,7 +116,7 @@ public class ManagerStaff {
         do {
             LOGGER.info("Nhập đúng định dạng tên...");
             name = scanner.nextLine();
-        } while (!input.checkName(name));
+        } while (!regex.checkName(name));
         return name;
     }
     public LocalDate inputBirthDay() {
@@ -126,11 +132,41 @@ public class ManagerStaff {
             }
         } return birthDay;
     }
+    public String inputPhoneNumber() {
+        String phoneNumberInput;
+        do {
+            LOGGER.info("Nhập đúng định dạng (+84)-(xxxxxxxxx) ");
+            phoneNumberInput = scanner.nextLine();
+        }while (!regex.checkPhoneNumber(phoneNumberInput));
+        return phoneNumberInput;
+    }
     public Address inputAddress() {
+        // Nhập tỉnh
+        System.out.println("Nhập tỉnh: ");
         String conscious;
+        conscious = scanner.nextLine();
+        while (!regex.checkAddress(conscious)) {
+            LOGGER.info("Nhập đúng định dạng");
+            conscious = scanner.nextLine();
+        }
+        // Nhập QUận/Huyện
+        System.out.println("Nhập Quận/Huyện: ");
         String district;
-        String commune;
-        String apartmentNumber;
-
+        district = scanner.nextLine();
+        while (!regex.checkAddress(district)) {
+            LOGGER.info("Nhập đúng định dạng");
+            district = scanner.nextLine();
+        }
+        // Nhập phường xã
+        System.out.println("Nhập phường/xã: ");
+        String commune = scanner.nextLine();
+        while (!regex.checkAddress(commune)) {
+            LOGGER.info("Nhập đúng định dạng");
+            commune = scanner.nextLine();
+        }
+        System.out.println("Nhập Số nhà: ");
+        String apartmentNumber = scanner.nextLine();
+        Address address = new Address();
+        return address = new Address(conscious,district,commune,apartmentNumber);
     }
 }

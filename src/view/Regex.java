@@ -8,7 +8,7 @@ public class Regex {
     private Matcher matcher;
     public static final String PHONE_REGEX = "^\\(\\+84\\)-\\(\\d{9}\\)$";
     public static final String NAME_REGEX = "^[a-zA-Z\\p{L}' ]{2,}$";
-    public static final String ADDRESS_REGEX = "^[a-zA-Z\\p{L}' ]{1,}$";
+    public static final String ADDRESS_REGEX = "^[a-zA-Z\\p{L}']+$";
     public static final String ID_REGEX = "^#\\d{3}$";
     public boolean checkPhoneNumber(String phoneNumber) {
         pattern = Pattern.compile(PHONE_REGEX);

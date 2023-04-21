@@ -8,7 +8,7 @@ public class FullTimeStaff extends Staff{
     private double fine;
     public FullTimeStaff() {
     }
-    public FullTimeStaff(String id, String name, LocalDate birthDay, int tel, Address address) {
+    public FullTimeStaff(String id, String name, LocalDate birthDay, String tel, Address address) {
         super(id, name, birthDay, tel, address);
     }
 

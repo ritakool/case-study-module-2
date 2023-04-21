@@ -7,7 +7,7 @@ public class PartTimeStaff extends Staff{
     private double timeWork;
     public PartTimeStaff() {
     }
-    public PartTimeStaff(String id, String name, LocalDate birthDay, int tel, Address address) {
+    public PartTimeStaff(String id, String name, LocalDate birthDay, String tel, Address address) {
         super(id, name, birthDay, tel, address);
     }
 

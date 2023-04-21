@@ -7,12 +7,12 @@ public abstract class Staff {
     private String id;
     private String name;
     private LocalDate birthDay;
-    private int tel;
+    private String tel;
     private Address address;
     public Staff(){
     }
 
-    public Staff(String id, String name,  LocalDate birthDay, int tel, Address address) {
+    public Staff(String id, String name,  LocalDate birthDay, String tel, Address address) {
         this.id = id;
         this.name = name;
         this.birthDay = birthDay;
@@ -32,7 +32,7 @@ public abstract class Staff {
         return birthDay;
     }
 
-    public int getTel() {
+    public String getTel() {
         return tel;
     }
 
@@ -52,7 +52,7 @@ public abstract class Staff {
         this.birthDay = birthDay;
     }
 
-    public void setTel(int tel) {
+    public void setTel(String tel) {
         this.tel = tel;
     }
 

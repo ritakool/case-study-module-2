@@ -6,6 +6,8 @@ public class Address {
     private String commune;
     private String apartmentNumber;
 
+    public Address() {
+    }
     public Address(String conscious, String district, String commune, String apartmentNumber) {
         this.conscious = conscious;
         this.district = district;

@@ -13,9 +13,9 @@ public class Main {
         ManagerStaff managerStaff = new ManagerStaff();
         Regex regex = new Regex();
 
-        Staff staff1 = new FullTimeStaff("#1","Nguyễn Văn Tèo", LocalDate.parse("1994-07-09"),7777777,new Address("Hà Nội","Ba Đình","34","425"));
-        Staff staff2 = new PartTimeStaff("#2","Đặng Hà", LocalDate.parse("2005-07-09"),7777777,new Address("Hà Nội","Ba Đình","34","425"));
-        Staff staff3 = new FullTimeStaff("#3","Nguyễn Văn Hà", LocalDate.parse("2000-07-31"),7777777,new Address("Hà Nội","Ba Đình","34","425"));
+        Staff staff1 = new FullTimeStaff("#1","Nguyễn Văn Tèo", LocalDate.parse("1994-07-09"),"(+84)-(123456789)",new Address("Hà Nội","Ba Đình","34","425"));
+        Staff staff2 = new PartTimeStaff("#2","Đặng Hà", LocalDate.parse("2005-07-09"),"(+84)-(123456789)",new Address("Hà Nội","Ba Đình","34","425"));
+        Staff staff3 = new FullTimeStaff("#3","Nguyễn Văn Hà", LocalDate.parse("2000-07-31"),"(+84)-(123456789)",new Address("Hà Nội","Ba Đình","34","425"));
         managerStaff.addStaff(staff1);
         managerStaff.addStaff(staff3);
         managerStaff.addStaff(staff2);
