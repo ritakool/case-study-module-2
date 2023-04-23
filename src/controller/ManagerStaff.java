@@ -141,7 +141,7 @@ public class ManagerStaff {
                                         }
                                     } catch (Exception e) {
                                         System.out.println("Nhập không đúng");
-//                                        scanner.next();
+                                        scanner.next();
                                     }
                                 } while (choice2 != 0);
                                 break;
