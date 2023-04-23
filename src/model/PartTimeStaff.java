@@ -11,6 +11,11 @@ public class PartTimeStaff extends Staff{
         super(id, name, birthDay, tel, address);
     }
 
+    public PartTimeStaff(String id, String name, LocalDate birthDay, String tel, Address address, double timeWork) {
+        super(id, name, birthDay, tel, address);
+        this.timeWork = timeWork;
+    }
+
     public double getTimeWork() {
         return timeWork;
     }
