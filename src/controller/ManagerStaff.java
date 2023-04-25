@@ -9,10 +9,11 @@ import view.Regex;
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.*;
-import java.util.logging.Logger;
 
 public class ManagerStaff {
-    private static final Logger LOGGER = Logger.getLogger(String.valueOf(ManagerStaff.class));
+    private final String ERROR_COLOR = "\u001B[31m";
+    private final String ACCESS_COLOR = "\u001B[34m";
+    private final String RESET_COLOR = "\u001B[0m";
     List<Staff> staffs = new ArrayList<>();
     Scanner scanner = new Scanner(System.in);
     Regex regex = new Regex();
@@ -21,7 +22,7 @@ public class ManagerStaff {
     }
 
     public void displayStaff() {
-        System.out.println("Danh sách nhân viên là: ");
+        System.out.println(ACCESS_COLOR+"Danh sách toàn bộ nhân viên là: "+RESET_COLOR);
         staffs.forEach(System.out::println);
     }
 
@@ -46,7 +47,7 @@ public class ManagerStaff {
             i++;
         }
         if (!checkName) {
-            System.out.println("Không tồn tại nhân viên này trong hệ thống.");
+            System.out.println(ERROR_COLOR + "Không tồn tại nhân viên này trong hệ thống." + RESET_COLOR);
         }
 
     }
@@ -55,9 +56,9 @@ public class ManagerStaff {
 
         if (!checkStaffId(staff.getId())) {
             staffs.add(staff);
-            LOGGER.info("Đã thêm nhân viên thành công.");
+            System.out.println(ACCESS_COLOR+"Đã thêm nhân viên thành công."+RESET_COLOR);
         } else {
-            LOGGER.info("Đã có nhân viên này, bạn có muốn cập nhật nhân viên này không. (Y/N) ?");
+            System.out.println( ERROR_COLOR+"Đã có nhân viên này, bạn có muốn cập nhật nhân viên này không. (Y/N) ?"+RESET_COLOR);
             String confirm = scanner.nextLine();
             if (confirm.equalsIgnoreCase("y")) {
                 updateStaff(staff.getId());
@@ -69,15 +70,15 @@ public class ManagerStaff {
 
     public void updateStaff(String id) {
         if (!checkStaffId(id)) {
-            LOGGER.info("Không tồn tại nhân viên này trong hệ thống.");
+            System.out.println(ERROR_COLOR+"Không tồn tại nhân viên này trong hệ thống."+RESET_COLOR);
         } else {
-            LOGGER.warning("Bạn có chắc muốn sửa đổi thông tin (Y/N)?");
+            System.out.println(ERROR_COLOR+"Bạn có chắc muốn sửa đổi thông tin (Y/N)?"+RESET_COLOR);
             String confirm = scanner.nextLine();
             if (confirm.equalsIgnoreCase("y")) {
                 while (true) {
                     System.out.println("""
                                         Bạn muốn sửa thông tin nào: 
-                                        1. Tên
+                                        1. Sửa tên nhân viên
                                         2. Ngày tháng năm sinh
                                         3. Số điện thoại
                                         4. Địa chỉ
@@ -91,30 +92,32 @@ public class ManagerStaff {
                             case 1:
                                 System.out.println("Sửa tên: ");
                                 staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setName(inputName()));
-                                LOGGER.info("Đã cập nhập tên thành công.");
+                                System.out.println(ACCESS_COLOR +"Đã cập nhập tên thành công."+RESET_COLOR);
                                 break;
                             case 2:
                                 System.out.println("Sửa ngày tháng năm sinh: ");
                                 staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setBirthDay(inputBirthDay()));
-                                LOGGER.info("Cập nhật thành công ngày sinh.");
+                                System.out.println(ACCESS_COLOR+"Cập nhật thành công ngày sinh."+RESET_COLOR);
                                 break;
                             case 3:
                                 System.out.println("Sửa số điện thoại: ");
                                 staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setTel(inputPhoneNumber()));
-                                LOGGER.info("cập nhật thành công số điện thoại");
+                                System.out.println(ACCESS_COLOR+"Cập nhật thành công số điện thoại"+RESET_COLOR);
                                 break;
                             case 4:
                                 System.out.println("sửa địa chỉ: ");
                                 staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(staff -> staff.setAddress(inputAddress()));
-                                LOGGER.info("Cập nhật thành công địa chỉ mới");
+                                System.out.println(ACCESS_COLOR+"Cập nhật thành công địa chỉ mới"+RESET_COLOR);
                                 break;
                             case 5:
                                 for (int i = 0; i < staffs.size(); i++) {
                                     if (staffs.get(i).getId().equals(id)) {
                                         if (staffs.get(i) instanceof PartTimeStaff) {
-                                            System.out.println("Bạn có muốn thay đổi thời gian làm việc không");
-                                            System.out.println("Y. Đồng ý");
-                                            System.out.println("Ấn phím bất kì để kết thúc.");
+                                            System.out.println(ERROR_COLOR+"""
+                                                    Bạn có muốn thay đổi thời gian làm việc của nhân viên ?
+                                                    Y. Đồng ý
+                                                    Ấn phím bất kì để kết thúc.
+                                            """+RESET_COLOR);
                                             scanner.nextLine();
                                             String Confirm = scanner.nextLine();
                                             if (Confirm.equalsIgnoreCase("y")) {
@@ -125,15 +128,18 @@ public class ManagerStaff {
 
                                         }
                                         if (staffs.get(i) instanceof FullTimeStaff) {
-                                            System.out.println("Bạn có muốn thay đổi thưởng phạt không");
-                                            System.out.println("Y. Đồng ý");
-                                            System.out.println("Ấn phím bất kì để kết thúc.");
+                                            System.out.println(ERROR_COLOR+"""
+                                                    Bạn có muốn thay đổi xét thưởng,lỗi vi phạm của nhân viên ?
+                                                    Y. Đồng ý
+                                                    Ấn phím bất kì để kết thúc.
+                                            """+RESET_COLOR);
                                             scanner.nextLine();
                                             String Confirm = scanner.nextLine();
                                             if (Confirm.equalsIgnoreCase("y")) {
                                                 changeRewardsMistakes(id);
+                                            } else {
+                                                System.out.println("Thay đổi ý định");
                                             }
-                                            System.out.println("Thay đổi ý định");
                                         }
                                     }
                                 }
@@ -146,7 +152,6 @@ public class ManagerStaff {
                                                        1. FullTime -> PartTime.
                                                        2. PartTime -> FullTime.
                                                        0. Không chuyển đổi nữa.
-                                                            
                                             """);
                                     try {
                                         choice2 = scanner.nextByte();
@@ -172,15 +177,15 @@ public class ManagerStaff {
                                 } while (choice2 != 0);
                                 break;
                             case 0:
-                                System.out.println("Không thay đổi nữa");
+                                System.out.println(ACCESS_COLOR+"Không thay đổi nữa"+RESET_COLOR);
                                 System.out.println("Nhân viên bạn vừa sửa đổi là: ");
                                 staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(System.out::println);
                                 return;
                             default:
-                                LOGGER.info("lựa chọn không hợp lệ");
+                                System.out.println(ERROR_COLOR+"lựa chọn không hợp lệ"+RESET_COLOR);
                         }
                     } catch (Exception e) {
-                        LOGGER.info("Lựa chọn không hợp lệ");
+                        System.out.println(ERROR_COLOR+"Lựa chọn không hợp lệ"+RESET_COLOR);
                         scanner.next();
                     }
                 }
@@ -192,37 +197,41 @@ public class ManagerStaff {
 
     public void removeStaff(String id) {
         if (!checkStaffId(id)) {
-            System.out.println("Không tồn tại nhân viên này trong hệ thống");
+            System.out.println(ERROR_COLOR+"Không tồn tại nhân viên này trong hệ thống"+RESET_COLOR);
         } else {
-            LOGGER.warning("Bạn có chắc muốn xóa nhân viên này (Y/N)? ");
+            System.out.println(ERROR_COLOR+"Bạn có chắc muốn xóa nhân viên này (Y/N)?"+RESET_COLOR);
             staffs.stream().filter(staff -> staff.getId().equals(id)).findFirst().ifPresent(System.out::println);
             String confirm = scanner.nextLine();
             if (confirm.equalsIgnoreCase("y")) {
                 staffs.removeIf(staff -> staff.getId().equals(id));
-                System.out.println("đã xóa thành công...");
+                System.out.println(ACCESS_COLOR+"Đã xóa thành công..."+RESET_COLOR);
             } else {
-                System.out.println("không xóa nữa");
+                System.out.println(ACCESS_COLOR+"không xóa nữa"+RESET_COLOR);
             }
         }
     }
 
     public void arrangement() {
-        Collections.sort(staffs, new Comparator<Staff>() {
-            @Override
-            public int compare(Staff o1, Staff o2) {
-                String nameObj1 = o1.getName().substring(o1.getName().lastIndexOf(" ") + 1);
-                String nameObj2 = o2.getName().substring(o2.getName().lastIndexOf(" ") + 1);
-                int nameObj = nameObj1.compareTo(nameObj2);
-                if (nameObj != 0) {
-                    return nameObj;
-                } else {
-                    String objName1 = o1.getName().substring(0, o1.getName().indexOf(" "));
-                    String objName2 = o2.getName().substring(0, o2.getName().indexOf(" "));
-                    return objName1.compareTo(objName2);
+        if (staffs.isEmpty()) {
+            System.out.println(ACCESS_COLOR+"Danh sách nhân viên trống"+RESET_COLOR);
+        } else {
+            Collections.sort(staffs, new Comparator<Staff>() {
+                @Override
+                public int compare(Staff o1, Staff o2) {
+                    String nameObj1 = o1.getName().substring(o1.getName().lastIndexOf(" ") + 1);
+                    String nameObj2 = o2.getName().substring(o2.getName().lastIndexOf(" ") + 1);
+                    int nameObj = nameObj1.compareTo(nameObj2);
+                    if (nameObj != 0) {
+                        return nameObj;
+                    } else {
+                        String objName1 = o1.getName().substring(0, o1.getName().indexOf(" "));
+                        String objName2 = o2.getName().substring(0, o2.getName().indexOf(" "));
+                        return objName1.compareTo(objName2);
+                    }
                 }
-            }
-        });
-        displayStaff();
+            });
+            displayStaff();
+        }
     }
 
     public boolean checkStaffId(String id) {
@@ -236,7 +245,7 @@ public class ManagerStaff {
         String name;
         name = scanner.nextLine();
         while (!regex.checkName(name)) {
-            LOGGER.info("Nhập đúng định dạng tên...");
+            System.out.println(ERROR_COLOR+"Nhập đúng định dạng tên"+RESET_COLOR);
             name = scanner.nextLine();
         }
         return name;
@@ -247,11 +256,12 @@ public class ManagerStaff {
         LocalDate birthDay = null;
         while (!checkBirthDay) {
             try {
-                LOGGER.warning("Nhập đúng định dạng (yyyy-mm-dd)");
+                System.out.println(ERROR_COLOR+"Nhập đúng định dạng (yyyy-mm-dd)"+RESET_COLOR);
+                scanner.nextLine();
                 birthDay = LocalDate.parse(scanner.nextLine());
                 checkBirthDay = true;
             } catch (DateTimeException e) {
-                LOGGER.info("Không đúng định dạng yyyy-mm-dd");
+                System.out.println(ERROR_COLOR+"Không đúng định dạng (yyyy-mm-dd)"+ERROR_COLOR);
             }
         }
         return birthDay;
@@ -260,7 +270,7 @@ public class ManagerStaff {
     public String inputPhoneNumber() {
         String phoneNumberInput;
         do {
-            LOGGER.info("Nhập đúng định dạng (+84)-(xxxxxxxxx) ");
+            System.out.println(ERROR_COLOR+"Nhập đúng định dạng (+84)-(xxxxxxxxx) "+RESET_COLOR);
             phoneNumberInput = scanner.nextLine();
         } while (!regex.checkPhoneNumber(phoneNumberInput));
         return phoneNumberInput;
@@ -272,7 +282,7 @@ public class ManagerStaff {
         String conscious;
         conscious = scanner.nextLine();
         while (regex.checkAddress(conscious)) {
-            LOGGER.info("Nhập đúng định dạng");
+            System.out.println(ERROR_COLOR+"Nhập đúng định dạng"+RESET_COLOR);
             conscious = scanner.nextLine();
         }
         // Nhập QUận/Huyện
@@ -280,14 +290,14 @@ public class ManagerStaff {
         String district;
         district = scanner.nextLine();
         while (regex.checkAddress(district)) {
-            LOGGER.info("Nhập đúng định dạng");
+            System.out.println(ERROR_COLOR+"Nhập đúng định dạng"+RESET_COLOR);
             district = scanner.nextLine();
         }
         // Nhập phường xã
         System.out.println("Nhập phường/xã: ");
         String commune = scanner.nextLine();
         while (regex.checkAddress(commune)) {
-            LOGGER.info("Nhập đúng định dạng");
+            System.out.println(ERROR_COLOR+"Nhập đúng định dạng"+RESET_COLOR);
             commune = scanner.nextLine();
         }
         System.out.println("Nhập Số nhà: ");
@@ -300,7 +310,7 @@ public class ManagerStaff {
         String id;
         id = scanner.nextLine();
         while (!regex.checkID(id)) {
-            LOGGER.info("nhập đúng quy định (#xxx)");
+            System.out.println(ERROR_COLOR+"nhập đúng quy định (#xxx)"+RESET_COLOR);
             id = scanner.nextLine();
         }
         return id;
@@ -311,29 +321,14 @@ public class ManagerStaff {
             if (staffs.get(i).getId().equals(id)) {
                 Staff staff = staffs.get(i);
                 if (staff instanceof FullTimeStaff) {
-                    System.out.println("Nhập giờ làm: ");
-                    double workingHours = 0;
-                    while (true) {
-                        try {
-                            workingHours = scanner.nextDouble();
-                            if (workingHours < 0) {
-                                System.out.println("Có giờ âm hả ????");
-                                continue;
-                            }
-                            break;
-                        } catch (Exception e) {
-                            System.out.println("Vui lòng nhập cho đúng định dạng");
-                            scanner.nextLine();
-                        }
-                    }
                     FullTimeStaff fullTimeStaff = (FullTimeStaff) staff;
-                    PartTimeStaff partTimeStaff = new PartTimeStaff(fullTimeStaff.getId(), fullTimeStaff.getName(), fullTimeStaff.getBirthDay(), fullTimeStaff.getTel(), fullTimeStaff.getAddress(), workingHours);
+                    PartTimeStaff partTimeStaff = new PartTimeStaff(fullTimeStaff.getId(), fullTimeStaff.getName(), fullTimeStaff.getBirthDay(), fullTimeStaff.getTel(), fullTimeStaff.getAddress(), workingHours());
                     staffs.remove(i);
                     staffs.add(i, partTimeStaff);
-                    System.out.println("Đã chuyển đổi thành công");
+                    System.out.println(ACCESS_COLOR+"Đã chuyển đổi thành công"+RESET_COLOR);
                     return;
                 } else {
-                    System.out.println("Đang là nhân viên chính thức rồi");
+                    System.out.println(ERROR_COLOR+"Đang là nhân viên bán thời gian rồi"+RESET_COLOR);
                     return;
                 }
             }
@@ -355,7 +350,7 @@ public class ManagerStaff {
                             try {
                                 int intput = scanner.nextInt();
                                 if (intput < 0) {
-                                    System.out.println("Số lần vi phạm phải là số dương");
+                                    System.out.println(ERROR_COLOR+"Số lần vi phạm phải là số dương"+RESET_COLOR);
                                 } else {
                                     errorCount[j] = intput;
                                     validInput = true;
@@ -363,17 +358,17 @@ public class ManagerStaff {
 
                             } catch (InputMismatchException e) {
                                 scanner.nextLine();
-                                System.out.println("vui lòng nhập số nguyên");
+                                System.out.println(ERROR_COLOR+"Vui lòng nhập số nguyên"+RESET_COLOR);
                             } catch (IllegalArgumentException e) {
                                 scanner.nextLine();
-                                System.out.println("Sai định dạng");
+                                System.out.println(ERROR_COLOR+"Sai định dạng"+RESET_COLOR);
                             }
                         }
                     }
 
                     System.out.println("Nhập thông tin mà nhân viên đuơc thưởng");
                     FullTimeStaff.reward[] rewards = FullTimeStaff.reward.values();
-                    byte[] countReward = new byte[rewards.length];
+                    int[] countReward = new int[rewards.length];
                     for (int j = 0; j < rewards.length; j++) {
                         boolean validInput = false;
                         while (!validInput) {
@@ -381,28 +376,27 @@ public class ManagerStaff {
                             try {
                                 byte input = scanner.nextByte();
                                 if (input < 0 || input > 1) {
-                                    System.out.println("Nhập 0 hoặc 1");
+                                    System.out.println(ERROR_COLOR+"Nhập 0 hoặc 1"+RESET_COLOR);
                                 } else {
                                     countReward[j] = input;
                                     validInput = true;
                                 }
                             } catch (Exception e) {
                                 scanner.nextLine();
-                                System.out.println("Nhập 0 hoặc 1");
+                                System.out.println(ERROR_COLOR+"Nhập 0 hoặc 1"+RESET_COLOR);
                             }
                         }
                     }
                     PartTimeStaff partTimeStaff = (PartTimeStaff) staff;
-                    FullTimeStaff fullTimeStaff = new FullTimeStaff(partTimeStaff.getId(), partTimeStaff.getName(), partTimeStaff.getBirthDay(), partTimeStaff.getTel(), partTimeStaff.getAddress(), rewards, mistakes, errorCount);
+                    FullTimeStaff fullTimeStaff = new FullTimeStaff(partTimeStaff.getId(), partTimeStaff.getName(), partTimeStaff.getBirthDay(), partTimeStaff.getTel(), partTimeStaff.getAddress(), rewards, countReward, mistakes, errorCount);
                     staffs.remove(i);
                     staffs.add(i, fullTimeStaff);
-                    System.out.println("Đã chuyển đổi thành công");
+                    System.out.println(ACCESS_COLOR+"Đã chuyển đổi thành công"+RESET_COLOR);
                     return;
                 } else {
-                    System.out.println("Đang là nhân viên bán thời gian rồi ");
+                    System.out.println(ERROR_COLOR+"Đang là nhân viên chính thức rồi"+RESET_COLOR);
                     return;
                 }
-
             }
         }
     }
@@ -422,17 +416,17 @@ public class ManagerStaff {
                             validInput = true;
                             scanner.nextLine();
                             if (workingHours < 0) {
-                                System.out.println("Có giờ âm hả ????");
+                                System.out.println(ERROR_COLOR+"Có giờ âm hả ????"+RESET_COLOR);
                                 continue;
                             }
                             break;
                         } catch (Exception e) {
-                            System.out.println("Vui lòng nhập cho đúng định dạng");
+                            System.out.println(ERROR_COLOR+"Vui lòng nhập cho đúng định dạng"+RESET_COLOR);
                             scanner.nextLine();
                         }
                     }
                     ((PartTimeStaff) staff).setTimeWork(workingHours);
-                    System.out.println("Sửa giờ làm việc thành công");
+                    System.out.println(ACCESS_COLOR+"Sửa giờ làm việc thành công"+RESET_COLOR);
                 }
             }
         }
@@ -443,62 +437,197 @@ public class ManagerStaff {
             if (staffs.get(i).getId().equals(id)) {
                 Staff staff = staffs.get(i);
                 if (staff instanceof FullTimeStaff) {
-                    System.out.println("Nhập thông tin lỗi và số lần vi phạm:");
-                    FullTimeStaff.mistake[] mistakes = FullTimeStaff.mistake.values();
-                    int[] errorCount = new int[mistakes.length];
-                    for (int j = 0; j < mistakes.length; j++) {
-                        boolean validInput = false;
-                        while (!validInput) {
-                            System.out.print("Số lần vi phạm " + mistakes[j].getName() + ": ");
-                            try {
-                                int intput = scanner.nextInt();
-                                if (intput < 0) {
-                                    System.out.println("Số lần vi phạm phải là số dương");
-                                } else {
-                                    errorCount[j] = intput;
-                                    validInput = true;
-                                }
+                    int choice = -1;
+                    do {
+                        System.out.println("""
+                                    Bạn muốn sửa thông tin nào:
+                                    1. Sửa thông tin lỗi và số lần vi phạm.
+                                    2. Sửa thông tin mà nhân viên được thưởng
+                                    0. Không thay đổi nữa
+                            """);
+                        try {
+                            choice = scanner.nextInt();
 
-                            } catch (InputMismatchException e) {
-                                scanner.nextLine();
-                                System.out.println("vui lòng nhập số nguyên");
-                            } catch (IllegalArgumentException e) {
-                                scanner.nextLine();
-                                System.out.println("Sai định dạng");
+                            switch (choice) {
+                                case 1:
+                                    System.out.println("Sửa thông tin lỗi và số lần vi phạm");
+                                    System.out.println("Nhập thông tin lỗi và số lần vi phạm:");
+                                    FullTimeStaff.mistake[] mistakes = FullTimeStaff.mistake.values();
+                                    int[] errorCount = new int[mistakes.length];
+                                    for (int j = 0; j < mistakes.length; j++) {
+                                        boolean validInput = false;
+                                        while (!validInput) {
+                                            System.out.print("Số lần vi phạm " + mistakes[j].getName() + ": ");
+                                            try {
+                                                int intput = scanner.nextInt();
+                                                if (intput < 0) {
+                                                    System.out.println(ERROR_COLOR+"Số lần vi phạm phải là số dương"+RESET_COLOR);
+                                                } else {
+                                                    errorCount[j] = intput;
+                                                    validInput = true;
+                                                }
+
+                                            } catch (InputMismatchException e) {
+                                                scanner.nextLine();
+                                                System.out.println(ERROR_COLOR+"Vui lòng nhập số nguyên"+RESET_COLOR);
+                                            } catch (IllegalArgumentException e) {
+                                                scanner.nextLine();
+                                                System.out.println(ERROR_COLOR+"Sai định dạng"+RESET_COLOR);
+                                            }
+                                        }
+                                    }
+                                    ((FullTimeStaff) staff).setMistakes(mistakes);
+                                    ((FullTimeStaff) staff).setErrorCount(errorCount);
+                                    System.out.println(ACCESS_COLOR+"Sửa thành công"+RESET_COLOR);
+                                    break;
+                                case 2:
+                                    System.out.println("Sửa thông tin mà nhân viên được thưởng");
+                                    System.out.println("Nhập thông tin mà nhân viên đuơc thưởng");
+                                    FullTimeStaff.reward[] rewards = FullTimeStaff.reward.values();
+                                    byte[] countReward = new byte[rewards.length];
+                                    for (int j = 0; j < rewards.length; j++) {
+                                        boolean validInput = false;
+                                        while (!validInput) {
+                                            System.out.println("loại thưởng: " + rewards[j].getNameReward());
+                                            try {
+                                                byte input = scanner.nextByte();
+                                                if (input < 0 || input > 1) {
+                                                    System.out.println("Nhập 0 hoặc 1");
+                                                } else {
+                                                    countReward[j] = input;
+                                                    validInput = true;
+                                                }
+                                            } catch (Exception e) {
+                                                scanner.nextLine();
+                                                System.out.println("Nhập 0 hoặc 1");
+                                            }
+                                        }
+                                    }
+                                    ((FullTimeStaff) staff).setRewards(rewards);
+                                    System.out.println(ACCESS_COLOR+"Sửa thành công"+RESET_COLOR);
+                                    break;
+                                case 0:
+                                    System.out.println("không thay đổi nữa");
+                                    return;
+                                default:
+                                    System.out.println(ERROR_COLOR+"Không có lựa chọn này"+RESET_COLOR);
+                                    break;
                             }
+                        } catch (Exception e) {
+                            System.out.println(ERROR_COLOR+"Không có lựa chọn này"+RESET_COLOR);
                         }
-                    }
 
-                    System.out.println("Nhập thông tin mà nhân viên đuơc thưởng");
-                    FullTimeStaff.reward[] rewards = FullTimeStaff.reward.values();
-                    byte[] countReward = new byte[rewards.length];
-                    for (int j = 0; j < rewards.length; j++) {
-                        boolean validInput = false;
-                        while (!validInput) {
-                            System.out.println("loại thưởng: " + rewards[j].getNameReward());
-                            try {
-                                byte input = scanner.nextByte();
-                                if (input < 0 || input > 1) {
-                                    System.out.println("Nhập 0 hoặc 1");
-                                } else {
-                                    countReward[j] = input;
-                                    validInput = true;
-                                }
-                            } catch (Exception e) {
-                                scanner.nextLine();
-                                System.out.println("Nhập 0 hoặc 1");
-                            }
-                        }
-                    }
-
-                    ((FullTimeStaff) staff).setRewards(rewards);
-                    ((FullTimeStaff) staff).setMistakes(mistakes);
-                    ((FullTimeStaff) staff).setErrorCount(errorCount);
-                    System.out.println("Sửa thành công");
-
+                    } while (choice != 0);
                 }
             }
         }
+    }
+    public Staff newStaff() {
+        Staff staff;
+        System.out.println("Tạo nhân viên mới");
+        int choice;
+        while (true) {
+            try {
+                System.out.println("""
+                        loại nhân viên:
+                        1. Nhân viên chính thức.
+                        2. Nhân viên bán thời gian
+                """);
+                choice = scanner.nextInt();
+                switch (choice) {
+                    case 1:
+                        System.out.println(ACCESS_COLOR+"Nhân viên chính thức: "+RESET_COLOR);
+                        System.out.println("Nhập thông tin lỗi và số lần vi phạm:");
+                        FullTimeStaff.mistake[] mistakes = FullTimeStaff.mistake.values();
+                        int[] errorCount = new int[mistakes.length];
+                        for (int j = 0; j < mistakes.length; j++) {
+                            boolean validInput = false;
+                            while (!validInput) {
+                                System.out.print("Số lần vi phạm " + mistakes[j].getName() + ": ");
+                                try {
+                                    int intput = scanner.nextInt();
+                                    if (intput < 0) {
+                                        System.out.println(ERROR_COLOR+"Số lần vi phạm phải là số dương"+RESET_COLOR);
+                                    } else {
+                                        errorCount[j] = intput;
+                                        validInput = true;
+                                    }
+
+                                } catch (InputMismatchException e) {
+                                    scanner.nextLine();
+                                    System.out.println(ERROR_COLOR+"Vui lòng nhập số nguyên"+RESET_COLOR);
+                                } catch (IllegalArgumentException e) {
+                                    scanner.nextLine();
+                                    System.out.println(ERROR_COLOR+"Sai định dạng"+RESET_COLOR);
+                                }
+                            }
+                        }
+
+                        System.out.println("Nhập thông tin mà nhân viên đuơc thưởng");
+                        FullTimeStaff.reward[] rewards = FullTimeStaff.reward.values();
+                        int[] countReward = new int[rewards.length];
+                        for (int j = 0; j < rewards.length; j++) {
+                            boolean validInput = false;
+                            while (!validInput) {
+                                System.out.println("loại thưởng: " + rewards[j].getNameReward());
+                                try {
+                                    byte input = scanner.nextByte();
+                                    if (input < 0 || input > 1) {
+                                        System.out.println(ERROR_COLOR+"Nhập 0 hoặc 1"+RESET_COLOR);
+                                    } else {
+                                        countReward[j] = input;
+                                        validInput = true;
+                                    }
+                                } catch (Exception e) {
+                                    scanner.nextLine();
+                                    System.out.println(ERROR_COLOR+"Nhập 0 hoặc 1"+RESET_COLOR);
+                                }
+                            }
+                        }
+                        staff = new FullTimeStaff(inputId(),inputName(),inputBirthDay(),inputPhoneNumber(),inputAddress(),rewards,countReward,mistakes,errorCount);
+                        return staff;
+                    case 2:
+                        System.out.println(ACCESS_COLOR+"Nhân viên bán thời gian: "+RESET_COLOR);
+                        staff = new PartTimeStaff(inputId(),inputName(),inputBirthDay(),inputPhoneNumber(),inputAddress(),workingHours());
+                        return staff;
+                }
+            } catch (Exception e) {
+                System.out.println(ERROR_COLOR+"Lựa chọn không hợp lệ"+RESET_COLOR);
+                scanner.nextLine();
+            }
+
+        }
+
+//        return staff;
+    }
+    public double workingHours() {
+        System.out.println("Nhập giờ làm: ");
+        double workingHours = 0;
+        while (true) {
+            try {
+                workingHours = scanner.nextDouble();
+                if (workingHours < 0) {
+                    System.out.println(ERROR_COLOR+"Có giờ âm hả ????"+RESET_COLOR);
+                    continue;
+                }
+                break;
+            } catch (Exception e) {
+                System.out.println(ERROR_COLOR+"Vui lòng nhập cho đúng định dạng"+RESET_COLOR);
+                scanner.nextLine();
+            }
+        }
+        return workingHours;
+    }
+    public void showFullTime() {
+            System.out.println(ACCESS_COLOR+"Danh sách nhân viên toàn thời gian: "+RESET_COLOR);
+            staffs.stream().filter(staff -> staff instanceof FullTimeStaff).forEach(System.out::println);
+    }
+    public void showPartTime() {
+        System.out.println(ACCESS_COLOR+"Danh sách nhân viên bán thời gian"+RESET_COLOR);
+        staffs.stream().filter(staff -> staff instanceof PartTimeStaff).forEach(System.out::println);
+    }
+    public void showPayRoll() {
+
     }
 }
 

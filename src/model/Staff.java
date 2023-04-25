@@ -35,7 +35,6 @@ public abstract class Staff {
     public String getTel() {
         return tel;
     }
-
     public Address getAddress() {
         return address;
     }

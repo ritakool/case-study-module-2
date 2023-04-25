@@ -49,9 +49,9 @@ public class Address {
 
     @Override
     public String toString() {
-        return " Tỉnh: " + conscious  +
-                ", Huyện: " + district  +
-                ", Xã: " + commune  +
+        return " Tỉnh/Thành phố: " + conscious  +
+                ", Huyện/Quận: " + district  +
+                ", Xã/Phường: " + commune  +
                 ", Số Nhà: " + apartmentNumber ;
     }
 }

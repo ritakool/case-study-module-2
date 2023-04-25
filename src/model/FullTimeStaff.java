@@ -35,19 +35,12 @@ public class FullTimeStaff extends Staff{
         super(id, name, birthDay, tel, address);
     }
 
-    public FullTimeStaff(String id, String name, LocalDate birthDay, String tel, Address address, reward[] rewards, mistake[] mistakes, int[] errorCount) {
+    public FullTimeStaff(String id, String name, LocalDate birthDay, String tel, Address address, reward[] rewards ,int[] countReward, mistake[] mistakes, int[] errorCount) {
         super(id, name, birthDay, tel, address);
         this.rewards = rewards;
         this.mistakes = mistakes;
         this.errorCount = errorCount;
-        this.countReward = new int[rewards.length];
-    }
-
-    public FullTimeStaff(String id, String name, LocalDate birthDay, String tel, Address address, mistake[] mistakes, int[] errorCount) {
-        super(id, name, birthDay, tel, address);
-        this.mistakes = mistakes;
-        this.errorCount = errorCount;
-
+        this.countReward = countReward;
     }
 
     public void setMistakes(mistake[] mistakes) {
@@ -57,6 +50,7 @@ public class FullTimeStaff extends Staff{
     public int[] getErrorCount() {
         return errorCount;
     }
+
 
     public void setErrorCount(int[] errorCount) {
         this.errorCount = errorCount;
