@@ -1,8 +1,9 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class PartTimeStaff extends Staff{
+public class PartTimeStaff extends Staff implements Serializable {
     private final double HOURLY_WAGE = 100;
     private double timeWork;
     public PartTimeStaff() {

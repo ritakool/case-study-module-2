@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.lang.ref.SoftReference;
 import java.time.LocalDate;
 
-public class FullTimeStaff extends Staff{
+public class FullTimeStaff extends Staff implements Serializable {
     private final double BASIC_SALARY = 7000;
     private mistake[] mistakes;
     private reward[] rewards;
@@ -72,18 +73,25 @@ public class FullTimeStaff extends Staff{
         }
         return bonus;
     }
-    public String getMistakes() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Danh sách lỗi: \n");
-        for (int i = 0; i < errorCount.length; i++ ) {
-            if (errorCount[i] > 0) {
-                sb.append(mistake.values()[i].getName())
-                        .append(": ")
-                        .append(errorCount[i])
-                        .append("\n");
+    public String getReward() {
+        String result = "Danh sách thưởng: \n";
+        for (reward r : reward.values()) {
+            int count = countReward[r.ordinal()];
+            if (count > 0) {
+                result += r.getNameReward() + ": " + count + "\n";
             }
         }
-        return sb.toString();
+        return result;
+    }
+    public String getMistakes() {
+        String result = "Danh sách lỗi: \n";
+        for (mistake m : mistake.values()) {
+            int count = errorCount[m.ordinal()];
+            if (count > 0) {
+                result += m.getName() + ": " + count + "\n";
+            }
+        }
+        return result;
     }
     public enum mistake {
         FORGOT_REPORT("Quên làm báo cáo tuần", 150),
@@ -130,7 +138,7 @@ public class FullTimeStaff extends Staff{
                 "Lương cơ bản = " + BASIC_SALARY + '\t' +
                 "Thưởng: " + bonus() + '\t' +
                 "Phạt: " + penalty() + '\t' +
-                "Tổng lương: " + payroll() + "\t" + getMistakes() + '\n' +
+                "Tổng lương: " + payroll() + "\t" + getReward() + '\n' +getMistakes() + '\n' +
                 "---------------";
     }
 }

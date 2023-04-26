@@ -1,9 +1,10 @@
 package model;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 
-public abstract class Staff {
+public abstract class Staff implements Serializable {
     private String id;
     private String name;
     private LocalDate birthDay;

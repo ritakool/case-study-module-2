@@ -1,6 +1,8 @@
 package model;
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable {
     private String conscious;
     private String district;
     private String commune;
